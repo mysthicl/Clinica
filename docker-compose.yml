@@ -1,0 +1,25 @@
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: laravel_mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: clinica_dental
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: laravel_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - laravel_network
+
+volumes:
+  mariadb_data:
+    driver: local
+
+networks:
+  laravel_network:
+    driver: bridge
