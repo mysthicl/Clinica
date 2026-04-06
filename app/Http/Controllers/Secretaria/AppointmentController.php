@@ -18,14 +18,14 @@ class AppointmentController extends Controller
         $date = $request->input("date");
         $status = $request->input("status");
 
-        $appointment = Appointment::with(['patient', 'user'])
+        $appointments = Appointment::with(['patient', 'user'])
         ->when($date, fn($q) => $q->where('scheduled_at', $date))
         ->when($status, fn($q) => $q->where('status', $status))
         ->orderBy('scheduled_at', 'desc')
         ->paginate(10)
         ->withQueryString();
 
-        return view('secretaria.appointment.index', compact('appointments', 'date', 'status'));
+        return view('secretaria.appointments.index', compact('appointments', 'date', 'status'));
     }
 
     /**
