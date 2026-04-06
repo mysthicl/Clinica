@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Secretaria\PatientController;
+use App\Models\Role;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Dashboards protegidos por rol
+// Auth Admin
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
@@ -31,21 +33,31 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
 });
 
+// Auth Secretaria
 Route::middleware(['auth', 'role:Secretaria'])->prefix('secretaria')->name('secretaria.')->group(function () {
     Route::get('/dashboard', function () {
         return view('secretaria.dashboard');
     })->name('dashboard');
-
+    // Pacientes
     Route::resource('patients', PatientController::class)
         ->except(['show']);
+
+    // Citas
+    Route::resource('appointments', \App\Http\Controllers\Secretaria\AppointmentController::class)->except(['show', 'destroy']);
+    Route::patch('appointments/{appointmets}/cancel', [App\Http\Controllers\Secretaria\AppointmentController::class, 'cancel'])->name('appointments.cancel');
 });
 
+// Auth Doctor
 Route::middleware(['auth', 'role:Doctor'])->prefix('doctor')->name('doctor.')->group(function () {
     Route::get('/dashboard', function () {
         return view('doctor.dashboard');
     })->name('dashboard');
 
+    // Pacientes - solo lectura
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+
+    // Citas - solo lectura
+    Route::get('appointments', [\App\Http\Controllers\Secretaria\AppointmentController::class, 'index'])->name('appointments.index');
 });
 
 require __DIR__.'/auth.php';
