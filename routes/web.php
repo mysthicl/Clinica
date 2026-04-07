@@ -39,12 +39,14 @@ Route::middleware(['auth', 'role:Secretaria'])->prefix('secretaria')->name('secr
         return view('secretaria.dashboard');
     })->name('dashboard');
     // Pacientes
-    Route::resource('patients', PatientController::class)
+    Route::resource('patients', \App\Http\Controllers\Secretaria\PatientController::class)
         ->except(['show']);
 
     // Citas
-    Route::resource('appointments', \App\Http\Controllers\Secretaria\AppointmentController::class)->except(['show', 'destroy']);
-    Route::patch('appointments/{appointmets}/cancel', [App\Http\Controllers\Secretaria\AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::resource('appointments', \App\Http\Controllers\Secretaria\AppointmentController::class)
+        ->except(['show', 'destroy']);
+    Route::patch('appointments/{appointment}/cancel', [\App\Http\Controllers\Secretaria\AppointmentController::class, 'cancel'])
+        ->name('appointments.cancel');
 });
 
 // Auth Doctor
@@ -53,11 +55,13 @@ Route::middleware(['auth', 'role:Doctor'])->prefix('doctor')->name('doctor.')->g
         return view('doctor.dashboard');
     })->name('dashboard');
 
-    // Pacientes - solo lectura
-    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    // Pacientes — solo lectura
+    Route::get('/patients', [\App\Http\Controllers\Secretaria\PatientController::class, 'index'])
+        ->name('patients.index');
 
-    // Citas - solo lectura
-    Route::get('appointments', [\App\Http\Controllers\Secretaria\AppointmentController::class, 'index'])->name('appointments.index');
+    // Citas — solo lectura
+    Route::get('/appointments', [\App\Http\Controllers\Secretaria\AppointmentController::class, 'index'])
+        ->name('appointments.index');
 });
 
 require __DIR__.'/auth.php';
