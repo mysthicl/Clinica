@@ -64,4 +64,22 @@ Route::middleware(['auth', 'role:Doctor'])->prefix('doctor')->name('doctor.')->g
         ->name('appointments.index');
 });
 
+// Grupo compartido — Secretaria y Doctor
+Route::middleware(['auth', 'role:Secretaria,Doctor'])->prefix('shared')->name('shared.')->group(function () {
+
+    // Consultas
+    Route::resource('consults', \App\Http\Controllers\Shared\ConsultController::class)
+        ->only(['index', 'create', 'store', 'show']);
+    Route::patch('consults/{consult}/close', [\App\Http\Controllers\Shared\ConsultController::class, 'close'])
+        ->name('consults.close');
+    Route::patch('consults/{consult}/cancel', [\App\Http\Controllers\Shared\ConsultController::class, 'cancel'])
+        ->name('consults.cancel');
+
+    // Servicios dentro de una consulta
+    Route::post('consults/{consult}/services', [\App\Http\Controllers\Shared\ConsultServiceController::class, 'store'])
+        ->name('consults.services.store');
+    Route::delete('consults/{consult}/services/{consultService}', [\App\Http\Controllers\Shared\ConsultServiceController::class, 'destroy'])
+        ->name('consults.services.destroy');
+});
+
 require __DIR__.'/auth.php';
