@@ -74,7 +74,7 @@ class ConsultController extends Controller
                 ->update(['status' => 'Completada']);
         }
 
-        return redirect()->route('shared.consults.show', $consult->id_consult)
+        return redirect()->route('shared.consults.index', $consult->id_consult)
             ->with('success', 'Consulta abierta correctamente.');
     }
 
@@ -113,6 +113,36 @@ class ConsultController extends Controller
 
         return back()->with('success', 'Consulta cancelada');
     }
+
+    public function fromAppointment(Appointment $appointment)
+    {
+        // Validar que la cita este en estado Agendada
+        if($appointment->status !== 'Agendada'){
+            return redirect()->route('secretaria.appointments.index')->with('error', 'Solo se puede abrir una consulta desde una cita Agendada.');
+        }
+
+        // Verificar que la cita no tenga ya una consulta generada
+        if($appointment->consult()->exists()){
+            return redirect()->route('shared.consults.show', $appointment->consusult->id_consult)->with('error', 'Ya existe una consulta generada para esta cita.');
+        }
+
+        // Crear la consulta directamente con los datos de la cita
+        $consult = Consult::create([
+            'id_patient' => $appointment->id_patient,
+            'id_user' => $appointment->id_user,
+            'date_register' => now(),
+            'total' => 0,
+            'status' => 'Abierta', 
+            'notes' => $appointment->notes,
+            'id_appointment' => $appointment->id_appointment,
+        ]);
+
+        // Marcar la cita como Completada
+        $appointment->update(['status' => 'Completada']);
+
+        return redirect()->route('shared.consults.show', $consult->id_consult)->with('success', 'Consulta abierta correctamente desde la cita.');
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

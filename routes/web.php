@@ -67,6 +67,7 @@ Route::middleware(['auth', 'role:Doctor'])->prefix('doctor')->name('doctor.')->g
 // Grupo compartido — Secretaria y Doctor
 Route::middleware(['auth', 'role:Secretaria,Doctor'])->prefix('shared')->name('shared.')->group(function () {
 
+Route::post('consults/from-appointment/{appointment}', [\App\Http\Controllers\Shared\ConsultController::class, 'fromAppointment'])->name('consults.from-appointment');
     // Consultas
     Route::resource('consults', \App\Http\Controllers\Shared\ConsultController::class)
         ->only(['index', 'create', 'store', 'show']);

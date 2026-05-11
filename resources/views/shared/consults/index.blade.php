@@ -34,7 +34,7 @@
                 <div class="flex items-end gap-2">
                     <button type="submit" class="bg-gray-700 text-white px-4 py-2 text-sm rounded hover:bg-gray-800">Filtrar</button>
                     @if ($search || $status)
-                        <a href="{{ route('shared.consults.index') }}" class="px-4 py-2 text-sm border rounded hover:bg-gray-50">Limpiar</a>
+                        <a href="{{ route('shared.consults.index') }}" class="px-4 py-2 text-sm border rounded hover:bg-gray-50 bg-gray-400">Limpiar</a>
                     @endif
                 </div>
             </form>
