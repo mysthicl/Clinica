@@ -87,6 +87,9 @@ Route::post('consults/from-appointment/{appointment}', [\App\Http\Controllers\Sh
         ->name('consults.services.store');
     Route::delete('consults/{consult}/services/{consultService}', [\App\Http\Controllers\Shared\ConsultServiceController::class, 'destroy'])
         ->name('consults.services.destroy');
+
+    // Historial clinico
+    Route::get('history/{patient}', [\App\Http\Controllers\Shared\HistoryController::class, 'show'])->name('history.show');
 });
 
 require __DIR__.'/auth.php';
