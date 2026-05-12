@@ -47,6 +47,12 @@ Route::middleware(['auth', 'role:Secretaria'])->prefix('secretaria')->name('secr
         ->except(['show', 'destroy']);
     Route::patch('appointments/{appointment}/cancel', [\App\Http\Controllers\Secretaria\AppointmentController::class, 'cancel'])
         ->name('appointments.cancel');
+
+    // Pagos
+    Route::get('payments', [\App\Http\Controllers\Secretaria\PaymentController::class, 'index'])->name('payments.index');
+    Route::post('payments/consult/{consult}',[\App\Http\Controllers\Secretaria\PaymentController::class, 'store'])
+    ->name('payments.store');
+    Route::patch('payments/{payment}/void', [\App\Http\Controllers\Secretaria\PaymentController::class, 'void'])->name('payments.void');
 });
 
 // Auth Doctor
