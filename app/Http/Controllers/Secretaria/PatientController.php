@@ -17,9 +17,13 @@ class PatientController extends Controller
 
         $patients = Patient::when($search, function($query, $search){
             $query->where(function ($q) use ($search){
-                $q->where('name', 'like', "%{$search}%")->orWhere('last_name', 'like', "%{$search}%")->orWhere('dui', 'like', "%{$search}%");
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->orWhere('dui', 'like', "%{$search}%");
             });
-        })->orderBy('last_name')->paginate(10)->withQueryString();
+        })->orderBy('last_name')
+        ->paginate(10)
+        ->withQueryString();
 
         return view('secretaria.patients.index', compact('patients', 'search'));
     }
@@ -102,7 +106,7 @@ class PatientController extends Controller
             return back()->with('error', 'No se puede eliminar el paciente porque tiene citas o consultas asociadas.');
         }
 
-        $patient->delete();
+        $patient->delete($patient->id_patient);
 
         return redirect()->route('secretaria.patients.index')->with('success', 'Paciente eliminado correctamente.');
     }

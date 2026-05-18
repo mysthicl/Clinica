@@ -62,8 +62,7 @@ Route::middleware(['auth', 'role:Doctor'])->prefix('doctor')->name('doctor.')->g
     })->name('dashboard');
 
     // Pacientes — solo lectura
-    Route::get('/patients', [\App\Http\Controllers\Secretaria\PatientController::class, 'index'])
-        ->name('patients.index');
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
 
     // Citas — solo lectura
     Route::get('/appointments', [\App\Http\Controllers\Secretaria\AppointmentController::class, 'index'])
