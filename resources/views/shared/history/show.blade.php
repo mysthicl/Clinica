@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             Historial Clínico — {{ $patient->last_name }}, {{ $patient->name }}
         </h2>
     </x-slot>
@@ -64,7 +64,7 @@
 
         {{-- Consultas --}}
         <div class="space-y-4">
-            <h3 class="text-base font-semibold text-gray-800">Consultas</h3>
+            <h3 class="text-base font-semibold text-white">Consultas</h3>
 
             @forelse($patient->consults as $consult)
             @php
@@ -170,7 +170,7 @@
 
             </div>
             @empty
-                <div class="bg-white rounded shadow p-6 text-center text-sm text-gray-400">
+                <div class="bg-white rounded shadow p-6 text-center text-sm text-black">
                     Este paciente no tiene consultas registradas.
                 </div>
             @endforelse
@@ -181,7 +181,7 @@
             <a href="{{ auth()->user()->role->rol === 'Doctor'
                         ? route('doctor.patients.index')
                         : route('secretaria.patients.index') }}"
-               class="px-4 py-2 text-sm border rounded hover:bg-gray-50">
+               class="px-4 py-2 text-sm text-white border rounded hover:bg-gray-50 hover:text-black">
                 ← Volver al listado
             </a>
         </div>
