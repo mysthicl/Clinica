@@ -13,6 +13,15 @@
                     <x-info-button>
                         <a href="{{ route('secretaria.patients.index') }}" >Gestionar Pacientes</a>
                     </x-info-button>
+                    <x-active-button>
+                        <a href="{{ route('secretaria.appointments.index') }}" >Gestionar Citas</a>
+                    </x-active-button>
+                    <x-warning-button>
+                        <a href="{{ route('secretaria.payments.index') }}" >Gestionar Pagos</a>
+                    </x-warning-button>
+                    <x-moradic-button>
+                        <a href="{{ route('shared.consults.index') }}" >Gestionar Consultas</a>
+                    </x-moradic-button>            
                 </div>
             </div>
         </div>

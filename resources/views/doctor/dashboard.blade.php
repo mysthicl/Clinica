@@ -16,6 +16,9 @@
                     <x-active-button>
                         <a href="{{ route('doctor.appointments.index') }}">Ver Citas</a>
                     </x-active-button>
+                    <x-warning-button>
+                        <a href="{{ route('shared.consults.index') }}">Ver Consultas</a>
+                    </x-warning-button>
                 </div>
             </div>
         </div>
